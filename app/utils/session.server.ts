@@ -3,8 +3,6 @@ import {
   redirect,
 } from "@remix-run/node";
 
-import { badRequest } from "~/utils/request.server";
-
 import bcrypt from "bcryptjs";
 import { db } from "./db.server";
 
@@ -12,6 +10,9 @@ type RegisterForm = {
   password: string;
   email: string;
   username: string;
+  date: string;
+  month: string;
+  year: string;
 };
 
 type LoginForm = {
@@ -77,6 +78,25 @@ export async function requireUserId(
   return userId;
 }
 
+
+export async function getUserAllDetails(request: Request) {
+  const userId = await getUserId(request);
+  if (typeof userId !== "string") {
+    return null;
+  }
+
+  const user = await db.user.findUnique({
+    select: { passwordHash: false, id: true, email: true, interests: true, pronouns: true, name: true, username: true, bio: true, dob: true },
+    where: { id: userId },
+  });
+
+  if (!user) {
+    throw await logout(request);
+  }
+
+  return user;
+}
+
 export async function getUser(request: Request) {
   const userId = await getUserId(request);
   if (typeof userId !== "string") {
@@ -130,11 +150,17 @@ export async function register({
   password,
   username,
   email,
+  date,
+  month,
+  year
 }: RegisterForm) {
 
   const passwordHash = await bcrypt.hash(password, 10);
   const user = await db.user.create({
-    data: { passwordHash, username, email, name: username, bio: "", interests: "", pronouns: "", pfp: "", tech: "" },
+    data: {
+      passwordHash, username, email, name: username, bio: "", interests: "", pronouns: "", pfp: "", tech: "",
+      dob: new Date(Number(year), Number(month) - 1, Number(date))
+    },
   });
   return { id: user.id, username };
 }

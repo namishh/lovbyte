@@ -22,7 +22,8 @@ function getUsers() {
       "pfp": "https://example.com/john_doe.png",
       "interests": "Trekking",
       "tech": "JavaScript~Python",
-      "pronouns": "he~him"
+      "pronouns": "he~him",
+      "dob": new Date(1990, 1, 1),
     },
     {
       "username": "jane_smith",
@@ -33,7 +34,8 @@ function getUsers() {
       "pfp": "https://example.com/jane_smith.png",
       "interests": "Travel~Photography~Nature",
       "tech": "Java~C++",
-      "pronouns": "she~her"
+      "pronouns": "she~her",
+      "dob": new Date(1990, 1, 1),
     },
   ]
 }

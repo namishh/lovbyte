@@ -25,6 +25,37 @@ function validateUsername(username: string) {
   }
 }
 
+function isLeapYear(year: number) {
+  return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+}
+
+function validateDates(dob: { month: string; year: string, date: string }) {
+  const month = Number(dob.month)
+  const year = Number(dob.year)
+  const date = Number(dob.date)
+  if (new Date().getFullYear() - year < 18) {
+    return "You Must Be Atleast 18 years old."
+  }
+  if (
+    month == 2 && date >= 29 && isLeapYear(new Date().getFullYear())
+  ) {
+    return "Invalid Date"
+  }
+  if (
+    month == 2 && date > 28 && !isLeapYear(new Date().getFullYear())
+  ) {
+    return "Invalid Date"
+  }
+  if (
+    month == 4 && date > 30 ||
+    month == 6 && date > 30 ||
+    month == 9 && date > 30 ||
+    month == 11 && date > 30
+  ) {
+    return "Invalid Date"
+  }
+}
+
 function validatePassword(password: string) {
   if (password.length < 6) {
     return "Passwords must be at least 6 characters long";
@@ -49,7 +80,10 @@ export const action = async ({
   const password = form.get("password");
   const email = form.get("email") as string;
   const username = form.get("username");
-
+  const month = form.get("month") as string
+  const date = form.get("day") as string
+  const year = form.get("year") as string
+  const o = { month: month, year: year, date: date }
   if (
     typeof password !== "string" ||
     typeof username !== "string"
@@ -65,6 +99,7 @@ export const action = async ({
   const fieldErrors = {
     password: validatePassword(password),
     username: validateUsername(username),
+    dob: validateDates(o),
   };
   if (Object.values(fieldErrors).some(Boolean)) {
     return badRequest({
@@ -93,7 +128,7 @@ export const action = async ({
       formError: `User with username ${username} already exists`,
     });
   } else {
-    const user = await register({ username, password, email });
+    const user = await register({ username, password, email, month, date, year });
     console.log({ user });
     if (!user) {
       return badRequest({
@@ -111,12 +146,14 @@ export const action = async ({
 
 export default function Login() {
   const [searchParams] = useSearchParams();
-
+  const days = Array.from({ length: 31 }, (_, index) => index + 1);
+  const months = Array.from({ length: 12 }, (_, index) => index + 1);
+  const years = Array.from({ length: new Date().getFullYear() - 1970 + 1 }, (_, index) => index + 1970);
   const actionData = useActionData<typeof action>();
 
   return (
-    <div className="flex justify-center items-center p-4 md:p-16 lg:p-24">
-      <div className="container w-full md:w-1/2 lg:w-1/3 p-8 rounded-xl bg-neutral-900">
+    <div className="flex justify-center items-center p-4 md:p-8">
+      <div className="container w-full md:w-2/3 lg:w-1/3 p-8 rounded-xl bg-neutral-900">
         <h1 className="text-4xl mb-4 text-white font-bold">Sign Up<span className="text-emerald-400">.</span></h1>
         <form className="flex flex-col gap-6" method="post">
           <input
@@ -165,17 +202,54 @@ export default function Login() {
                 {actionData.fieldErrors.password}
               </p>
             ) : null}
-            <div id="my-3">
-              {actionData?.formError ? (
-                <p
-                  className="text-red-300"
-                  role="alert"
-                >
-                  {actionData.formError}
-                </p>
-              ) : null}
+          </div>
+          <div className="flex flex-col gap-3">
+            <label htmlFor="date-input" className="text-white">Date Of Birth</label>
+            <div className="flex justify-between">
+              <div className="flex gap-2 items-center">
+                <label htmlFor="date-input" className="text-white">Month</label>
+                <select name="month" className="month bg-neutral-800 focus:outline-none px-4 rounded-xl py-2 text-white">
+                  {months.map(month => (
+                    <option className="bg-neutral-800 py-4 text-white hover:bg-emerald-400 hover:text-black" key={month} value={month}>{month}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex gap-2 items-center">
+                <label htmlFor="date-input" className="text-white">Date</label>
+                <select name="day" className="month bg-neutral-800 focus:outline-none px-4 rounded-xl py-2 text-white">
+                  {days.map(month => (
+                    <option className="bg-neutral-800 py-4 text-white hover:bg-emerald-400 hover:text-black" key={month} value={month}>{month}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex gap-2 items-center">
+                <label htmlFor="date-input" className="text-white">Year</label>
+                <select name="year" className="month bg-neutral-800 focus:outline-none px-4 rounded-xl py-2 text-white">
+                  {years.map(month => (
+                    <option className="bg-neutral-800 py-4 text-white hover:bg-emerald-400 hover:text-black" key={month} value={month}>{month}</option>
+                  ))}
+                </select>
+              </div>
             </div>
-
+            {actionData?.fieldErrors?.dob ? (
+              <p
+                className="text-red-300"
+                role="alert"
+                id="password-error"
+              >
+                {actionData.fieldErrors.dob}
+              </p>
+            ) : null}
+          </div>
+          <div id="my-3">
+            {actionData?.formError ? (
+              <p
+                className="text-red-300"
+                role="alert"
+              >
+                {actionData.formError}
+              </p>
+            ) : null}
           </div>
           <button type="submit" className="button bg-emerald-400 inline-block self-start px-10 py-3 rounded-xl">
             Submit

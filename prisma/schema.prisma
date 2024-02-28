@@ -27,5 +27,6 @@ model User {
   tech  String
   pronouns  String
   passwordHash String
+  dob       DateTime 
 }
 
