@@ -1,4 +1,5 @@
 import type { MetaFunction, LoaderFunctionArgs, } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { useState } from "react"
 import { json } from "@remix-run/node";
 import {
@@ -12,6 +13,10 @@ import { getUser } from "~/utils/session.server";
 export const loader = async ({
   request,
 }: LoaderFunctionArgs) => {
+  const user = await getUser(request)
+  if (!user) {
+    return redirect("/auth/signin")
+  }
   return json({
     user: await getUser(request)
   });
