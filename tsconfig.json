@@ -1,8 +1,12 @@
 {
   "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"],
+      "ts-node": {
+        "esm": true
+    },
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "isolatedModules": true,
+    "module": "ESNext",
     "esModuleInterop": true,
     "jsx": "react-jsx",
     "moduleResolution": "Bundler",
