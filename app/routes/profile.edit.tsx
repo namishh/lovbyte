@@ -1,10 +1,7 @@
 import type { MetaFunction, LoaderFunctionArgs, } from "@remix-run/node";
-import { useState } from "react"
 import type { LinksFunction, ActionFunctionArgs, } from "@remix-run/node";
-import { json, redirect, unstable_parseMultipartFormData } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import {
-  Link,
-  Outlet,
   useLoaderData,
 } from "@remix-run/react";
 
@@ -27,15 +24,12 @@ export const action = async ({
   const name = form.get("name")
   const pronouns = form.get("pronouns")
   const bio = form.get("bio")
-  const tech = form.get("tech")
-  const user = await getUserAllDetails(request)
-  updateUser(request, {
-    ...user, pfp, name, pronouns, bio, tech
+  const tech = form.get("tech") as String
+  await updateUser(request, {
+    pfp, name, pronouns, bio, tech: tech.split("/")
   })
-  return redirect("/profile")
+  return redirect("/profile?edited=true")
 }
-
-
 
 export const meta: MetaFunction = () => {
   return [
@@ -93,7 +87,7 @@ export default function Index() {
                 type="text"
                 id="tech-input"
                 name="tech"
-                defaultValue={data.user?.tech}
+                defaultValue={data.user?.tech.join("/")}
                 className="p-3 bg-neutral-900 rounded-xl focus:bg-neutral-800 focus:outline-none text-white"
               />
             </div>

@@ -26,7 +26,6 @@ function formatDate(dateString: string) {
 
 export default function Index() {
   const data = useLoaderData<typeof loader>();
-  const techs = data.user?.tech.split("/")
   return (
     <div className="flex text-white justify-center items-center">
       <div className="px-8 py-2 md:w-2/3 w-full lg:w-1/2 " style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
@@ -59,9 +58,9 @@ export default function Index() {
         </div>
         <div className="mt-4 px-4">
           <h2 className="text-xl text-gray-500">Technologies.</h2>
-          <div className="my-2">{data.user?.tech ? (
+          <div className="my-2">{data.user?.tech[0] ? (
             <div className="flex flex-wrap gap-4">
-              {techs?.map((i, j) => {
+              {data.user.tech?.map((i, j) => {
                 return <div className="px-6 py-2 rounded-xl bg-neutral-900" key={j}>{i}</div>
               })}
             </div>

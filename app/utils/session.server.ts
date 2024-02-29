@@ -171,7 +171,7 @@ export async function register({
   const passwordHash = await bcrypt.hash(password, 10);
   const user = await db.user.create({
     data: {
-      passwordHash, username, email, name: username, bio: "", interests: "", pronouns: "", pfp: "https://api.dicebear.com/7.x/lorelei/png", tech: "",
+      passwordHash, username, email, name: username, bio: "", github: "", twitter: "", interests: [], pronouns: "they/them", projects: {}, pfp: "https://api.dicebear.com/7.x/lorelei/png", tech: [],
       dob: new Date(Number(year), Number(month) - 1, Number(date))
     },
   });
