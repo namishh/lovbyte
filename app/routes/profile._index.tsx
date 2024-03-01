@@ -29,15 +29,18 @@ export default function Index() {
   return (
     <div className="flex text-white justify-center items-center">
       <div className="px-8 md:py-0 py-2 md:w-2/3 w-full lg:w-1/2 " style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-        <div className="flex px-4 justify-between items-end">
-          <div className="flex gap-4 items-end">
+        <div className="flex px-4 flex-col flex-wrap md:flex-row justify-between items-start gap-8 md:items-end">
+          <div className="flex gap-4  flex-wrap items-end">
             <img src={data.user?.pfp} alt="" className="h-24 w-24 bg-neutral-800 border-2 border-white rounded-full" />
             <div className="flex flex-col">
               <h1 className="text-3xl">{data.user?.name}</h1>
               <h1 className="text-xl text-gray-500">@{data.user?.username} | {data.user?.pronouns}</h1>
             </div>
           </div>
-          <Link to="/profile/edit" className="text-lg text-emerald-400">Edit</Link>
+          <div className="flex gap-4 ml-4 flex-wrap">
+            <Link to="/profile/changepassword" className="text-lg text-emerald-400">Change Password</Link>
+            <Link to="/profile/edit" className="text-lg text-emerald-400">Edit</Link>
+          </div>
         </div>
         <div className="px-12 py-[1px] bg-neutral-800 my-8"></div>
         <div className="mt-4 px-4 flex gap-4">

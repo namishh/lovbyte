@@ -128,6 +128,20 @@ export async function updateUser(request: Request, newData: any) {
   return updatedUser
 }
 
+export async function updateUserPassword(request: Request, password: string) {
+  const userId = await getUserId(request);
+  const passwordHash = await bcrypt.hash(password, 10);
+  if (typeof userId !== "string") {
+    return null;
+  }
+  const updatedUser = await db.user.update({
+    where: { id: userId }, // Specify which user to update using the unique identifier
+    data: { passwordHash }, // Provide the new data to update
+  });
+
+  return updatedUser
+}
+
 export async function logout(request: Request) {
   const session = await getUserSession(request);
   return redirect("/auth/signin", {

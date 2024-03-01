@@ -1,8 +1,9 @@
 import type { MetaFunction, LoaderFunctionArgs, } from "@remix-run/node";
-import type { LinksFunction, ActionFunctionArgs, } from "@remix-run/node";
+import type { ActionFunctionArgs, } from "@remix-run/node";
+import { badRequest } from "~/utils/request.server";
 import { json, redirect } from "@remix-run/node";
 import {
-  useLoaderData,
+  useLoaderData, useActionData
 } from "@remix-run/react";
 
 import { getUserAllDetails, updateUser } from "~/utils/session.server";
@@ -16,18 +17,52 @@ export const loader = async ({
 };
 
 
+const validateBio = (bio: string) => {
+  if (bio.length > 200) {
+    return "Bio cannot be more than 200 characters"
+  }
+}
+
+const validateName = (name: string) => {
+  if (name.length >= 30) {
+    return "Name cannot be more than 30 characters"
+  }
+}
+
+const validatePronouns = (name: string) => {
+  if (name.length >= 20) {
+    return "Pronouns cannot be more than 20 characters."
+  }
+}
+
 export const action = async ({
   request,
 }: ActionFunctionArgs) => {
   const form = await request.formData();
   const pfp = form.get("pfp")
-  const name = form.get("name")
-  const pronouns = form.get("pronouns")
-  const bio = form.get("bio")
+  const name = form.get("name") as string
+  const pronouns = form.get("pronouns") as string
+  const bio = form.get("bio") as string
   const twitter = form.get("twitter")
   const github = form.get("github")
   const personalSite = form.get("personalsite")
   const tech = form.get("tech") as String
+
+
+  const fields = { bio, name, pronouns };
+  const fieldErrors = {
+    bio: validateBio(bio),
+    name: validateName(name),
+    pronouns: validatePronouns(pronouns)
+  };
+  if (Object.values(fieldErrors).some(Boolean)) {
+    return badRequest({
+      fieldErrors,
+      fields,
+      formError: null,
+    });
+  }
+
   await updateUser(request, {
     pfp, name, pronouns, bio, tech: tech.split("/"), twitter, github, personalSite
   })
@@ -43,6 +78,7 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   const data = useLoaderData<typeof loader>();
+  const actionData = useActionData<typeof action>();
   return (
     <>
       <div className="flex text-white justify-center items-center">
@@ -66,6 +102,15 @@ export default function Index() {
                 defaultValue={data.user?.name}
                 className="p-3 bg-neutral-900 rounded-xl focus:bg-neutral-800 focus:outline-none text-white"
               />
+              {actionData?.fieldErrors?.name ? (
+                <p
+                  className="text-red-300"
+                  role="alert"
+                  id="password-error"
+                >
+                  {actionData.fieldErrors.name}
+                </p>
+              ) : null}
             </div>
             <div className="flex mt-4 flex-col gap-3"> <label htmlFor="username-input" className="text-white">Pronouns</label>
               <input
@@ -75,6 +120,15 @@ export default function Index() {
                 defaultValue={data.user?.pronouns}
                 className="p-3 bg-neutral-900 rounded-xl focus:bg-neutral-800 focus:outline-none text-white"
               />
+              {actionData?.fieldErrors?.pronouns ? (
+                <p
+                  className="text-red-300"
+                  role="alert"
+                  id="password-error"
+                >
+                  {actionData.fieldErrors.pronouns}
+                </p>
+              ) : null}
             </div>
             <div className="flex mt-4 flex-col gap-3"> <label htmlFor="username-input" className="text-white">Bio</label>
               <textarea
@@ -84,6 +138,15 @@ export default function Index() {
                 defaultValue={data.user?.bio}
                 className="p-3 bg-neutral-900 rounded-xl focus:bg-neutral-800 focus:outline-none text-white"
               />
+              {actionData?.fieldErrors?.bio ? (
+                <p
+                  className="text-red-300"
+                  role="alert"
+                  id="password-error"
+                >
+                  {actionData.fieldErrors.bio}
+                </p>
+              ) : null}
             </div>
             <div className="flex mt-4 flex-col gap-3"> <label htmlFor="username-input" className="text-white">Technologies (separate them with /)</label>
               <input
