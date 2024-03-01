@@ -87,6 +87,8 @@ export default function Index() {
             </div>
           ) : "No tech stack set."}</div>
         </div>
+        <div className="px-12 py-[1px] bg-neutral-800 my-8"></div>
+        <h1 className="text-3xl mx-6">Projects</h1>
       </div>
     </div>
   );

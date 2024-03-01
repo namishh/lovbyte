@@ -18,12 +18,6 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-function validatePassword(password: string) {
-  if (password.length < 6) {
-    return "Passwords must be at least 6 characters long";
-  }
-}
-
 export const loader = async ({
   request,
 }: LoaderFunctionArgs) => {
@@ -52,25 +46,13 @@ export const action = async ({
   }
 
   const fields = { password, email };
-  const fieldErrors = {
-    password: validatePassword(password),
-  };
-  if (Object.values(fieldErrors).some(Boolean)) {
-    return badRequest({
-      fieldErrors,
-      fields,
-      formError: null,
-    });
-  }
 
   const user = await login({ email, password });
-  console.log({ user });
   if (!user) {
     return badRequest({
       fieldErrors: null,
       fields,
-      formError:
-        "Username/Password combination is incorrect",
+      formError: "Username/Password combination is incorrect",
     });
   }
   return createUserSession(user.id, "/users");
@@ -116,6 +98,16 @@ export default function Login() {
               type="password"
             />
 
+          </div>
+          <div id="form-error-message">
+            {actionData?.formError ? (
+              <p
+                className="text-red-300"
+                role="alert"
+              >
+                {actionData.formError}
+              </p>
+            ) : null}
           </div>
           <button type="submit" className="button bg-emerald-400 inline-block self-start px-10 py-3 rounded-xl">
             Submit
