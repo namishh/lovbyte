@@ -1,8 +1,6 @@
-import type { LinksFunction, ActionFunctionArgs, } from "@remix-run/node";
+import type { ActionFunctionArgs, } from "@remix-run/node";
 import { Link, useSearchParams, useActionData } from "@remix-run/react";
 import { login, createUserSession, } from "~/utils/session.server";
-
-import { db } from "~/utils/db.server";
 import { badRequest } from "~/utils/request.server";
 import type { LoaderFunctionArgs, } from "@remix-run/node";
 
@@ -34,7 +32,6 @@ export const action = async ({
   const form = await request.formData();
   const password = form.get("password");
   const email = form.get("email") as string;
-  console.log(email, password)
   if (
     typeof password !== "string"
   ) {
@@ -112,7 +109,7 @@ export default function Login() {
           <button type="submit" className="button bg-emerald-400 inline-block self-start px-10 py-3 rounded-xl">
             Submit
           </button>
-          <Link to="/signup" className="cursor-pointer mt-2 underline text-emerald-400">Or, Make a new account</Link>
+          <Link to="/auth/signup" className="cursor-pointer mt-2 underline text-emerald-400">Or, Make a new account</Link>
         </form>
       </div >
     </div >

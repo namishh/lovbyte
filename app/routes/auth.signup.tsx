@@ -1,4 +1,4 @@
-import type { LinksFunction, ActionFunctionArgs, } from "@remix-run/node";
+import type { ActionFunctionArgs, } from "@remix-run/node";
 import { Link, useSearchParams, useActionData } from "@remix-run/react";
 import { createUserSession, register } from "~/utils/session.server";
 
@@ -254,7 +254,7 @@ export default function Login() {
           <button type="submit" className="button bg-emerald-400 inline-block self-start px-10 py-3 rounded-xl">
             Submit
           </button>
-          <Link to="/signin" className="cursor-pointer mt-2 underline text-emerald-400">Already have an account?</Link>
+          <Link to="/auth/signin" className="cursor-pointer mt-2 underline text-emerald-400">Already have an account?</Link>
         </form>
       </div >
     </div >
