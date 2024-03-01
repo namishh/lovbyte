@@ -6,12 +6,16 @@ import {
   Outlet,
   useLoaderData,
 } from "@remix-run/react";
-
+import { redirect } from "@remix-run/node";
 import { getUser } from "~/utils/session.server";
 
 export const loader = async ({
   request,
 }: LoaderFunctionArgs) => {
+  const user = await getUser(request)
+  if (!user) {
+    return redirect("/auth/signin")
+  }
   return json({
     user: await getUser(request)
   });

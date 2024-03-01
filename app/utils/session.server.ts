@@ -86,7 +86,7 @@ export async function getUserAllDetails(request: Request) {
   }
 
   const user = await db.user.findUnique({
-    select: { passwordHash: false, id: true, email: true, interests: true, tech: true, pronouns: true, name: true, username: true, bio: true, dob: true, pfp: true },
+    select: { passwordHash: false, id: true, email: true, twitter: true, github: true, interests: true, tech: true, pronouns: true, name: true, username: true, bio: true, dob: true, pfp: true, personalSite: true },
     where: { id: userId },
   });
 
@@ -171,7 +171,7 @@ export async function register({
   const passwordHash = await bcrypt.hash(password, 10);
   const user = await db.user.create({
     data: {
-      passwordHash, username, email, name: username, bio: "", github: "", twitter: "", interests: [], pronouns: "they/them", projects: {}, pfp: "https://api.dicebear.com/7.x/lorelei/png", tech: [],
+      passwordHash, username, email, name: username, bio: "", github: "", twitter: "", interests: [], pronouns: "they/them", projects: {}, pfp: "https://api.dicebear.com/7.x/lorelei/png", tech: [], personalSite: "",
       dob: new Date(Number(year), Number(month) - 1, Number(date))
     },
   });

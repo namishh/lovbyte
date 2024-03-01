@@ -24,11 +24,14 @@ export const action = async ({
   const name = form.get("name")
   const pronouns = form.get("pronouns")
   const bio = form.get("bio")
+  const twitter = form.get("twitter")
+  const github = form.get("github")
+  const personalSite = form.get("personalsite")
   const tech = form.get("tech") as String
   await updateUser(request, {
-    pfp, name, pronouns, bio, tech: tech.split("/")
+    pfp, name, pronouns, bio, tech: tech.split("/"), twitter, github, personalSite
   })
-  return redirect("/profile?edited=true")
+  return redirect("/profile")
 }
 
 export const meta: MetaFunction = () => {
@@ -43,7 +46,7 @@ export default function Index() {
   return (
     <>
       <div className="flex text-white justify-center items-center">
-        <div className="px-8 py-2 md:w-2/3 w-full lg:w-1/2 " style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
+        <div className="px-8  md:py-0 py-2  md:w-2/3 w-full lg:w-1/2 " style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
           <h1 className="text-white text-4xl">Edit <span className="text-emerald-400">Profile.</span></h1>
           <form className="mt-4" method="post" encType="multipart/form-data">
             <div className="flex flex-col gap-3"> <label htmlFor="username-input" className="text-white">Link To Profile Pic</label>
@@ -88,6 +91,33 @@ export default function Index() {
                 id="tech-input"
                 name="tech"
                 defaultValue={data.user?.tech.join("/")}
+                className="p-3 bg-neutral-900 rounded-xl focus:bg-neutral-800 focus:outline-none text-white"
+              />
+            </div>
+            <div className="flex mt-4 flex-col gap-3"> <label htmlFor="username-input" className="text-white">Twitter Username</label>
+              <input
+                type="text"
+                id="tech-input"
+                name="twitter"
+                defaultValue={data.user?.twitter}
+                className="p-3 bg-neutral-900 rounded-xl focus:bg-neutral-800 focus:outline-none text-white"
+              />
+            </div>
+            <div className="flex mt-4 flex-col gap-3"> <label htmlFor="username-input" className="text-white">Github Username</label>
+              <input
+                type="text"
+                id="tech-input"
+                name="github"
+                defaultValue={data.user?.github}
+                className="p-3 bg-neutral-900 rounded-xl focus:bg-neutral-800 focus:outline-none text-white"
+              />
+            </div>
+            <div className="flex mt-4 flex-col gap-3"> <label htmlFor="username-input" className="text-white">Link To Personal Site</label>
+              <input
+                type="text"
+                id="tech-input"
+                name="personalsite"
+                defaultValue={data.user?.personalSite}
                 className="p-3 bg-neutral-900 rounded-xl focus:bg-neutral-800 focus:outline-none text-white"
               />
             </div>

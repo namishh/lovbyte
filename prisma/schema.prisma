@@ -30,6 +30,7 @@ model User {
   pronouns     String
   passwordHash String
   github       String 
+  personalSite String 
   twitter      String
   dob          DateTime
   projects     Project[]
