@@ -33,7 +33,7 @@ export default function Index() {
           <div className="flex gap-4  flex-wrap items-end">
             <Link to="avatar" className="relative group border-2 border-white rounded-full">
               <div className="absolute w-full h-full  bg-neutral-800 rounded-full transition flex justify-center items-center opacity-0 group-hover:opacity-80">
-                <p className="text-md">CHANGE</p>
+                <p className="text-sm">CHANGE</p>
               </div>
               <img src={data.user?.pfp} alt="" className="h-16 w-16 md:h-24 md:w-24 bg-neutral-800 rounded-full" />
             </Link>
