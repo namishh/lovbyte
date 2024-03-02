@@ -46,10 +46,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     createMemoryUploadHandler(),
   );
   const formData = await parseMultipartFormData(request, uploadHandler);
-  const url = process.env.NODE_ENV == "development" ? 'http://localhost:3000' : 'https://lovbyte.vercel.app'
-  if (user?.pfp !== `${url}/uploads/${user?.id}.jpg`) {
+  if (user?.pfp !== `/uploads/${user?.id}.jpg`) {
     await updateUser(request, {
-      pfp: `${url}/uploads/${user?.id}.jpg`
+      pfp: `/uploads/${user?.id}.jpg`
     })
     return redirect("/profile")
   }
@@ -75,7 +74,7 @@ export default function Login() {
     <div className="flex justify-center items-center px-2 md:px-4 lg:px-24">
       <div className="container w-full md:w-1/2 lg:w-1/3 p-8 rounded-xl bg-neutral-900">
         <div className="flex gap-4 mb-8 items-center">
-          <img src={data.pfp} className="h-12 w-12 rounded-full" />
+          <img src={data.pfp} className="h-12 w-12 rounded-full object-cover" />
           <h1 className="text-4xl text-white font-bold">Change Avatar<span className="text-emerald-400">.</span></h1>
         </div>
         <Form className="flex flex-col gap-6" method="post" encType="multipart/form-data">
@@ -89,14 +88,14 @@ export default function Login() {
           <div className="flex flex-col gap-3">
             <input
               id="image-input"
-              name="image"
+              name="img"
               className="file:border-none file:focus:border-none file:px-4 file:py-2 file:bg-neutral-800 file:rounded-xl file:focus:bg-neutral-700 file:focus:outline-none file:text-white"
               type="file"
               onChange={handleChange}
               accept="image/*"
             />
           </div>
-          <img src={image} className="max-h-64 max-w-64 rounded-2xl" />
+          <img src={image} className="max-h-64 object-cover max-w-64 rounded-2xl" />
           <button type="submit" className="button text-emerald-400 bg-neutral-800 inline-block self-start px-10 py-3 rounded-xl">
             Change My Avatar
           </button>
