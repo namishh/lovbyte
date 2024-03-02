@@ -75,7 +75,7 @@ export const action = async ({
 }
 
 
-export default function Login() {
+export default function ProfileChangePassword() {
   const [searchParams] = useSearchParams();
 
   const actionData = useActionData<typeof action>();

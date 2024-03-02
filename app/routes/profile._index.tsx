@@ -4,6 +4,7 @@ import {
   Link,
   useLoaderData,
 } from "@remix-run/react";
+import { getProjects } from "~/utils/project.server";
 
 import { getUserAllDetails } from "~/utils/session.server";
 
@@ -11,7 +12,8 @@ export const loader = async ({
   request,
 }: LoaderFunctionArgs) => {
   return json({
-    user: await getUserAllDetails(request)
+    user: await getUserAllDetails(request),
+    projects: await getProjects(request)
   });
 };
 
@@ -24,7 +26,7 @@ function formatDate(dateString: string) {
 }
 
 
-export default function Index() {
+export default function ProfileIndex() {
   const data = useLoaderData<typeof loader>();
   return (
     <div className="flex text-white justify-center items-center">
@@ -93,7 +95,20 @@ export default function Index() {
           ) : "No tech stack set."}</div>
         </div>
         <div className="px-12 py-[1px] bg-neutral-800 my-8"></div>
-        <h1 className="text-3xl mx-6">Projects</h1>
+        <div className="flex justify-between mx-6 items-end">
+          <h1 className="text-3xl">Projects</h1>
+          <Link to="newproject" className="text-lg text-emerald-400">New</Link>
+        </div>
+        {data.projects.length > 0 ? <div className="flex mt-4 flex-wrap mx-4">
+          {data.projects.map((i, j) => <a key={j} href={`${i.url ? i.url : '#'}`} className="md:w-1/2 w-full h-48 md:p-2"> <div className="w-full p-4 rounded-xl h-full" style={{ background: `linear-gradient(to right, #0f0f0fee, #0f0f0fdd), url(${i.image})`, backgroundSize: `cover`, }}><div className="flex-col items-end flex justify-end h-full">
+            <p className="text-xl">{i.name}</p>
+            <p className="text-md text-gray-300">{i.description}</p>
+          </div></div></a>)}
+        </div> :
+          <div className="flex h-128 mt-4 p-16 justify-center items-center">
+            <p className="text-md text-gray-500">No projects</p>
+          </div>
+        }
       </div>
     </div>
   );

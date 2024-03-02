@@ -11,6 +11,7 @@ model Project {
   id          String  @id @default(uuid()) @map("_id")
   name        String
   description String
+  url         String
   image       String
   User        User?   @relation(fields: [userId], references: [id])
   userId      String?

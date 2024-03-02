@@ -31,27 +31,27 @@ export const loader = async ({
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const user = await getUserAllDetails(request)
+  let extension = '.jpg'
   const uploadHandler = composeUploadHandlers(
     createFileUploadHandler({
       directory: "public/uploads",
-      maxPartSize: 100000,
-      file: () => {
-        const filePath = `public/uploads/${user?.id}.jpg`;
+      maxPartSize: 256000,
+      file: ({ filename }) => {
+        const f = filename.split(".")
+        extension = f[f.length - 1]
+        const filePath = `public/uploads/${user?.id}.${extension}`;
         if (fs.existsSync(filePath)) {
           fs.unlinkSync(filePath); // Delete the existing file
         }
-        return `${user?.id}.jpg`;
+        return `${user?.id}.${extension}`;
       }
     }),
     createMemoryUploadHandler(),
   );
   const formData = await parseMultipartFormData(request, uploadHandler);
-  if (user?.pfp !== `/uploads/${user?.id}.jpg`) {
-    await updateUser(request, {
-      pfp: `/uploads/${user?.id}.jpg`
-    })
-    return redirect("/profile")
-  }
+  await updateUser(request, {
+    pfp: `/uploads/${user?.id}.${extension}`
+  })
   const image = formData.get("img");
   if (!image || typeof image === "string") {
     return json({ error: "something wrong", imgSrc: null });
@@ -61,7 +61,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 
 
-export default function Login() {
+export default function ProfileAvatar() {
   const [searchParams] = useSearchParams();
   const data = useLoaderData<typeof loader>();
   const [image, setImage] = useState(data.pfp)
@@ -104,5 +104,4 @@ export default function Login() {
     </div >
   );
 }
-
 

@@ -29,7 +29,7 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export default function Index() {
+export default function Users() {
   const data = useLoaderData<typeof loader>();
   const [open, setOpen] = useState(false)
   return (

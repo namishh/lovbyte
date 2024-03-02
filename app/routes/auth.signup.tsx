@@ -144,7 +144,7 @@ export const action = async ({
 }
 
 
-export default function Login() {
+export default function AuthSignup() {
   const [searchParams] = useSearchParams();
   const days = Array.from({ length: 31 }, (_, index) => index + 1);
   const months = Array.from({ length: 12 }, (_, index) => index + 1);

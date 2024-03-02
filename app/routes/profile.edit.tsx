@@ -75,7 +75,7 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export default function Index() {
+export default function ProfileEdit() {
   const data = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   return (
