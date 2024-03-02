@@ -28,10 +28,15 @@ export default function Index() {
   const data = useLoaderData<typeof loader>();
   return (
     <div className="flex text-white justify-center items-center">
-      <div className="px-8 md:py-0 py-2 md:w-2/3 w-full lg:w-1/2 " style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
+      <div className="px-0 md:px-4 lg:px-8 md:py-0 py-2 md:w-2/3 w-full lg:w-1/2 " style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
         <div className="flex px-4 flex-col flex-wrap md:flex-row justify-between items-start gap-8 md:items-end">
           <div className="flex gap-4  flex-wrap items-end">
-            <img src={data.user?.pfp} alt="" className="h-24 w-24 bg-neutral-800 border-2 border-white rounded-full" />
+            <Link to="avatar" className="relative group border-2 border-white rounded-full">
+              <div className="absolute w-full h-full  bg-neutral-800 rounded-full transition flex justify-center items-center opacity-0 group-hover:opacity-80">
+                <p className="text-md">CHANGE</p>
+              </div>
+              <img src={data.user?.pfp} alt="" className="h-16 w-16 md:h-24 md:w-24 bg-neutral-800 rounded-full" />
+            </Link>
             <div className="flex flex-col">
               <h1 className="text-3xl">{data.user?.name}</h1>
               <h1 className="text-xl text-gray-500">@{data.user?.username} | {data.user?.pronouns}</h1>

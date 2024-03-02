@@ -2,3 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+input[type='file'] {
+  color: transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 15px;
+  background: #090909;
+
+}
+
+
+*::-webkit-scrollbar-thumb {
+  background-color: #222;
+  border-radius: 3px;
+}
+

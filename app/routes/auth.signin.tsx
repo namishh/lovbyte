@@ -63,7 +63,7 @@ export default function Login() {
   const actionData = useActionData<typeof action>();
 
   return (
-    <div className="flex justify-center items-center p-4 md:p-16 lg:p-24">
+    <div className="flex justify-center items-center p-2 py-4 md:p-16 lg:p-24">
       <div className="container w-full md:w-1/2 lg:w-1/3 p-8 rounded-xl bg-neutral-900">
         <h1 className="text-4xl mb-4 text-white font-bold">Sign In<span className="text-emerald-400">.</span></h1>
         <form className="flex flex-col gap-6" method="post">

@@ -39,7 +39,6 @@ export const action = async ({
   request,
 }: ActionFunctionArgs) => {
   const form = await request.formData();
-  const pfp = form.get("pfp")
   const name = form.get("name") as string
   const pronouns = form.get("pronouns") as string
   const bio = form.get("bio") as string
@@ -64,7 +63,7 @@ export const action = async ({
   }
 
   await updateUser(request, {
-    pfp, name, pronouns, bio, tech: tech.split("/"), twitter, github, personalSite
+    name, pronouns, bio, tech: tech.split("/"), twitter, github, personalSite
   })
   return redirect("/profile")
 }
@@ -82,18 +81,9 @@ export default function Index() {
   return (
     <>
       <div className="flex text-white justify-center items-center">
-        <div className="px-8  md:py-0 py-2  md:w-2/3 w-full lg:w-1/2 " style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-          <h1 className="text-white text-4xl">Edit <span className="text-emerald-400">Profile.</span></h1>
+        <div className="px-0 md:px-4 lg:px-8  md:py-0 py-2  md:w-2/3 w-full lg:w-1/2 " style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
+          <h1 className="text-white text-3xl md:text-4xl">Edit <span className="text-emerald-400">Profile.</span></h1>
           <form className="mt-4" method="post" encType="multipart/form-data">
-            <div className="flex flex-col gap-3"> <label htmlFor="username-input" className="text-white">Link To Profile Pic</label>
-              <input
-                type="text"
-                id="pfp-input"
-                name="pfp"
-                defaultValue={data.user?.pfp}
-                className="p-3 bg-neutral-900 rounded-xl focus:bg-neutral-800 focus:outline-none text-white"
-              />
-            </div>
             <div className="flex mt-4 flex-col gap-3"> <label htmlFor="username-input" className="text-white">Display Name</label>
               <input
                 type="text"

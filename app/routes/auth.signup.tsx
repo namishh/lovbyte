@@ -152,7 +152,7 @@ export default function Login() {
   const actionData = useActionData<typeof action>();
 
   return (
-    <div className="flex justify-center items-center p-4 md:p-8">
+    <div className="flex justify-center items-center p-2 py-4 md:p-8">
       <div className="container w-full md:w-2/3 lg:w-1/3 p-8 rounded-xl bg-neutral-900">
         <h1 className="text-4xl mb-4 text-white font-bold">Sign Up<span className="text-emerald-400">.</span></h1>
         <form className="flex flex-col gap-6" method="post">
@@ -206,9 +206,9 @@ export default function Login() {
           <div className="flex flex-col gap-3">
             <label htmlFor="date-input" className="text-white">Date Of Birth</label>
             <div className="flex justify-between">
-              <div className="flex gap-2 items-center">
+              <div className="flex gap-[5px] md:gap-2 items-center">
                 <label htmlFor="date-input" className="text-white">Month</label>
-                <select name="month" className="month bg-neutral-800 focus:outline-none px-4 rounded-xl py-2 text-white">
+                <select name="month" className="month bg-neutral-800 focus:outline-none md:px-4 px-2 rounded-xl py-2 text-white">
                   {months.map(month => (
                     <option className="bg-neutral-800 py-4 text-white hover:bg-emerald-400 hover:text-black" key={month} value={month}>{month}</option>
                   ))}
@@ -216,7 +216,7 @@ export default function Login() {
               </div>
               <div className="flex gap-2 items-center">
                 <label htmlFor="date-input" className="text-white">Date</label>
-                <select name="day" className="month bg-neutral-800 focus:outline-none px-4 rounded-xl py-2 text-white">
+                <select name="day" className="month bg-neutral-800 focus:outline-none md:px-4 px-2 rounded-xl py-2 text-white">
                   {days.map(month => (
                     <option className="bg-neutral-800 py-4 text-white hover:bg-emerald-400 hover:text-black" key={month} value={month}>{month}</option>
                   ))}
@@ -224,7 +224,7 @@ export default function Login() {
               </div>
               <div className="flex gap-2 items-center">
                 <label htmlFor="date-input" className="text-white">Year</label>
-                <select name="year" className="month bg-neutral-800 focus:outline-none px-4 rounded-xl py-2 text-white">
+                <select name="year" className="month bg-neutral-800 focus:outline-none md:px-4 px-2 rounded-xl py-2 text-white">
                   {years.map(month => (
                     <option className="bg-neutral-800 py-4 text-white hover:bg-emerald-400 hover:text-black" key={month} value={month}>{month}</option>
                   ))}
