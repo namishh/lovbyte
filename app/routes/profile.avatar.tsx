@@ -1,16 +1,16 @@
-import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction, UploadHandler } from "@remix-run/node";
 import {
-  json, redirect,
+  redirect,
   unstable_composeUploadHandlers as composeUploadHandlers,
-  unstable_createFileUploadHandler as createFileUploadHandler,
   unstable_createMemoryUploadHandler as createMemoryUploadHandler,
   unstable_parseMultipartFormData as parseMultipartFormData,
 } from "@remix-run/node";
-import { useSearchParams, useLoaderData, Form } from "@remix-run/react";
+import { useSearchParams, useLoaderData, Form, useActionData } from "@remix-run/react";
 import { getUserAllDetails, updateUser, } from "~/utils/session.server";
 
-import fs from 'fs';
 import { useState } from "react";
+import { uploadImage } from "~/utils/image.server";
+import { badRequest } from "~/utils/request.server";
 
 
 export const meta: MetaFunction = () => {
@@ -30,32 +30,42 @@ export const loader = async ({
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const user = await getUserAllDetails(request)
-  let extension = '.jpg'
-  const uploadHandler = composeUploadHandlers(
-    createFileUploadHandler({
-      directory: "public/uploads",
-      maxPartSize: 256000,
-      file: ({ filename }) => {
-        const f = filename.split(".")
-        extension = f[f.length - 1]
-        const filePath = `public/uploads/${user?.id}.${extension}`;
-        if (fs.existsSync(filePath)) {
-          fs.unlinkSync(filePath); // Delete the existing file
-        }
-        return `${user?.id}.${extension}`;
+  const clonedData = request.clone()
+
+  const fields = {}
+  const form = await clonedData.formData();
+  const i = form.get("img")
+
+  if (i.size > 256000) {
+    return badRequest({
+      fieldErrors: null,
+      fields,
+      formError: `File Size Too Big. Should be <256KB`,
+    });
+  }
+  const uploadHandler: UploadHandler = composeUploadHandlers(
+    async ({ name, data }) => {
+      if (name !== "img") {
+        return undefined;
       }
-    }),
+      const uploadedImage = await uploadImage(data);
+      return uploadedImage.secure_url;
+    },
     createMemoryUploadHandler(),
   );
+
   const formData = await parseMultipartFormData(request, uploadHandler);
-  await updateUser(request, {
-    pfp: `/uploads/${user?.id}.${extension}`
-  })
-  const image = formData.get("img");
-  if (!image || typeof image === "string") {
-    return json({ error: "something wrong", imgSrc: null });
+  let a = formData.get("img")
+  if (!a) {
+    return badRequest({
+      fieldErrors: null,
+      fields,
+      formError: `There was a error changing your pfp`,
+    });
   }
+  await updateUser(request, {
+    pfp: a
+  })
   return redirect("/profile")
 };
 
@@ -63,6 +73,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 export default function ProfileAvatar() {
   const [searchParams] = useSearchParams();
+  const actionData = useActionData<typeof action>();
   const data = useLoaderData<typeof loader>();
   const [image, setImage] = useState(data.pfp)
 
@@ -93,8 +104,19 @@ export default function ProfileAvatar() {
               type="file"
               onChange={handleChange}
               accept="image/*"
+              required={true}
             />
           </div>
+          {actionData?.formError ? (
+            <div id="my-3">
+              <p
+                className="text-red-300"
+                role="alert"
+              >
+                {actionData.formError}
+              </p>
+            </div>
+          ) : null}
           <img src={image} className="max-h-64 object-cover max-w-64 rounded-2xl" />
           <button type="submit" className="button text-emerald-400 bg-neutral-800 inline-block self-start px-10 py-3 rounded-xl">
             Change My Avatar

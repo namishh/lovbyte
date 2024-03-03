@@ -1,4 +1,4 @@
-import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction, UploadHandler } from "@remix-run/node";
 import { badRequest } from "~/utils/request.server";
 import { db } from "~/utils/db.server";
 import {
@@ -11,8 +11,8 @@ import {
 import { useSearchParams, useLoaderData, Form, useActionData } from "@remix-run/react";
 import { getUserAllDetails, } from "~/utils/session.server";
 import fs from 'fs';
-
 import { useState } from "react";
+import { uploadImage } from "~/utils/image.server";
 
 export const meta: MetaFunction = () => {
   return [
@@ -43,8 +43,8 @@ const validateURL = (name: string) => {
 }
 
 const validateDesc = (name: string) => {
-  if (name.length >= 20 || name.length == 0) {
-    return "Desciption cannot be empty or more than 20 characters"
+  if (name.length >= 40 || name.length == 0) {
+    return "Desciption cannot be empty or more than 40 characters"
   }
 }
 
@@ -56,6 +56,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   const form = await clonedData.formData();
   const name = form.get("name") as string
+  const i = form.get("img")
   const description = form.get("description") as string
   const url = form.get("url") as string
 
@@ -85,30 +86,32 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     });
   }
 
-
-  let extension = '.jpg'
-  const uploadHandler = composeUploadHandlers(
-    createFileUploadHandler({
-      directory: "public/projects",
-      maxPartSize: 5000000,
-      file: ({ filename }) => {
-        const f = filename.split(".")
-        extension = f[f.length - 1]
-        const filePath = `public/projects/${user?.id}-${name}.${extension}`;
-        if (fs.existsSync(filePath)) {
-          fs.unlinkSync(filePath); // Delete the existing file
-        }
-        return `${user?.id}-${name}.${extension}`;
+  if (i.size > 5000000) {
+    return badRequest({
+      fieldErrors: null,
+      fields,
+      formError: `File Size Too Big. Should be <5MB`,
+    });
+  }
+  const uploadHandler: UploadHandler = composeUploadHandlers(
+    async ({ name, data }) => {
+      if (name !== "img") {
+        return undefined;
       }
-    }),
+      if (!i.size) {
+        return '/projects/default.jpg'
+      }
+      const uploadedImage = await uploadImage(data);
+      return uploadedImage.secure_url;
+    },
     createMemoryUploadHandler(),
   );
-  const imageData = await parseMultipartFormData(request, uploadHandler);
-  let image = imageData.get("img") as object;
-  await db.project.create({
-    data: { name, url: url.startsWith("https://") ? url : "https://" + url, userId: user?.id, description, image: image.size ? `/projects/${user?.id}-${name}.${extension}` : `/projects/default.jpg` },
-  });
 
+  const imageData = await parseMultipartFormData(request, uploadHandler);
+  let image = imageData.get("img");
+  await db.project.create({
+    data: { name, url: url.startsWith("https://") ? url : "https://" + url, userId: user?.id, description, image },
+  });
   return redirect("/profile")
 };
 

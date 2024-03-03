@@ -37,7 +37,7 @@ export default function ProfileIndex() {
               <div className="absolute w-full h-full  bg-neutral-800 rounded-full transition flex justify-center items-center opacity-0 group-hover:opacity-80">
                 <p className="text-sm">CHANGE</p>
               </div>
-              <img src={data.user?.pfp} alt="" className="h-16 w-16 md:h-24 md:w-24 bg-neutral-800 rounded-full" />
+              <img src={data.user?.pfp} alt="" className="h-16 object-cover w-16 md:h-24 md:w-24 bg-neutral-800 rounded-full" />
             </Link>
             <div className="flex flex-col">
               <h1 className="text-3xl">{data.user?.name}</h1>
