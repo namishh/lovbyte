@@ -33,7 +33,7 @@ export default function Auth() {
       <div className="z-50 sticky top-0 p-4 md:p-8 lg:px-16 w-full md:flex md:items-center md:justify-between">
         <div className="flex items-center justify-between">
           <a className="flex cursor-pointer items-center" href="/">
-            <span className="text-2xl cursor-pointer antialiased font-bold  text-white">lovbyte</span>
+            <span className="text-2xl cursor-pointer antialiased font-bold  text-gray-200">lov<span className="text-white">byte</span></span>
             <span className="text-2xl cursor-pointer antialiased font-bold  text-emerald-400">.</span>
           </a>
           <span onClick={() => setOpen(!open)} className="toggler cursor-pointer self-center">

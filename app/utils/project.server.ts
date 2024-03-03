@@ -1,3 +1,4 @@
+import { redirect } from "@remix-run/node";
 import { db } from "./db.server";
 import { getUserId, logout } from "./session.server";
 
@@ -5,7 +6,7 @@ export async function getProjects(request: Request) {
   const userId = await getUserId(request)
 
   if (!userId) {
-    throw await logout(request);
+    redirect('/auth/signin')
   }
 
   const projects = await db.project.findMany({
