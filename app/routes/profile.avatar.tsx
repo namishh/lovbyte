@@ -40,7 +40,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return badRequest({
       fieldErrors: null,
       fields,
-      formError: `File Size Too Big. Should be <256KB`,
+      formError: `File Size Too Big. Should be <5MB`,
     });
   }
   const uploadHandler: UploadHandler = composeUploadHandlers(
