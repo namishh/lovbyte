@@ -4,7 +4,6 @@ import { db } from "~/utils/db.server";
 import {
   redirect,
   unstable_composeUploadHandlers as composeUploadHandlers,
-  unstable_createFileUploadHandler as createFileUploadHandler,
   unstable_createMemoryUploadHandler as createMemoryUploadHandler,
   unstable_parseMultipartFormData as parseMultipartFormData,
 } from "@remix-run/node";
@@ -12,6 +11,7 @@ import { useSearchParams, useLoaderData, Form, useActionData } from "@remix-run/
 import { getUserAllDetails, } from "~/utils/session.server";
 import { useState } from "react";
 import { uploadImage } from "~/utils/image.server";
+import { singleProject, updateProject } from "~/utils/project.server";
 
 export const meta: MetaFunction = () => {
   return [
@@ -20,13 +20,15 @@ export const meta: MetaFunction = () => {
   ];
 }
 export const loader = async ({
-  request,
+  request, params
 }: LoaderFunctionArgs) => {
+  const id = params.projectId as string
   const user = await getUserAllDetails(request)
   if (!user) {
     return redirect("/auth/signin")
   }
-  return user
+  const project = await singleProject(request, id)
+  return { user, project }
 };
 
 const validateName = (name: string) => {
@@ -49,10 +51,9 @@ const validateDesc = (name: string) => {
 
 
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ request, params }: ActionFunctionArgs) => {
   const user = await getUserAllDetails(request)
   const clonedData = request.clone()
-
   const form = await clonedData.formData();
   const name = form.get("name") as string
   const i = form.get("img")
@@ -75,16 +76,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
 
   const projectExists = await db.project.findFirst({
-    where: { name, id: user?.id },
+    where: { userId: user?.id, name: params.projectId },
   });
-  if (projectExists) {
-    return badRequest({
-      fieldErrors: null,
-      fields,
-      formError: `You already have a project with this name.`,
-    });
-  }
-
   if (i.size > 5000000) {
     return badRequest({
       fieldErrors: null,
@@ -98,7 +91,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         return undefined;
       }
       if (!i.size) {
-        return '/projects/default.jpg'
+        return projectExists?.image
       }
       const uploadedImage = await uploadImage(data);
       return uploadedImage.secure_url;
@@ -108,9 +101,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   const imageData = await parseMultipartFormData(request, uploadHandler);
   let image = imageData.get("img");
-  await db.project.create({
-    data: { name, url: url.startsWith("https://") ? url : "https://" + url, userId: user?.id, description, image },
-  });
+  await updateProject(request, projectExists.name, {
+    name, description, url, image
+  })
   return redirect("/profile")
 };
 
@@ -118,7 +111,7 @@ export default function Login() {
   const [searchParams] = useSearchParams();
   const data = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
-  const [image, setImage] = useState('/projects/default.jpg')
+  const [image, setImage] = useState(data.project?.image)
 
   const handleChange = (e: any) => {
     setImage(URL.createObjectURL(e.target.files[0]));
@@ -128,7 +121,7 @@ export default function Login() {
     <div className="flex justify-center items-center px-2 md:px-4 lg:px-24">
       <div className="container w-full md:w-1/2  p-8 rounded-xl bg-neutral-900">
         <div className="flex gap-4 mb-8 items-center">
-          <h1 className="text-4xl text-white font-bold">Add New Project<span className="text-emerald-400">.</span></h1>
+          <h1 className="text-4xl text-white font-bold">Edit {data.project.name}<span className="text-emerald-400">.</span></h1>
         </div>
         <Form className="flex flex-col gap-6" method="post" encType="multipart/form-data">
           <input
@@ -143,6 +136,7 @@ export default function Login() {
               type="text"
               id="name-input"
               name="name"
+              defaultValue={data.project?.name}
               className="p-3 bg-neutral-800 transition rounded-xl focus:bg-neutral-700 focus:outline-none text-white"
             />
             {actionData?.fieldErrors?.name ? (
@@ -159,6 +153,7 @@ export default function Login() {
             <input
               type="text"
               id="name-input"
+              defaultValue={data.project?.description}
               name="description"
               className="p-3 bg-neutral-800 transition rounded-xl focus:bg-neutral-700 focus:outline-none text-white"
             />
@@ -166,7 +161,7 @@ export default function Login() {
               <p
                 className="text-red-300"
                 role="alert"
-                id="password-error"
+                defaultValue={data.project?.url}
               >
                 {actionData.fieldErrors.description}
               </p>
@@ -213,7 +208,7 @@ export default function Login() {
             </div>
           ) : null}
           <button type="submit" className="button text-emerald-400 bg-neutral-800 inline-block self-start px-10 py-3 rounded-xl">
-            Add Project
+            Make Changes
           </button>
         </Form>
       </div >

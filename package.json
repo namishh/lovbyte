@@ -14,6 +14,8 @@
     "seed": "node --loader ts-node/esm prisma/seed.ts"
   },
   "dependencies": {
+    "@marsidev/react-turnstile": "^0.5.3",
+    "@phosphor-icons/react": "^2.0.15",
     "@prisma/client": "^5.10.2",
     "@remix-run/css-bundle": "^2.7.2",
     "@remix-run/node": "^2.7.2",

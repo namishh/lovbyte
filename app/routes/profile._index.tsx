@@ -1,5 +1,6 @@
 import type { LoaderFunctionArgs, } from "@remix-run/node";
 import { json } from "@remix-run/node";
+import { PencilSimple, TrashSimple } from "@phosphor-icons/react";
 import {
   Link,
   useLoaderData,
@@ -100,9 +101,13 @@ export default function ProfileIndex() {
           <Link to="newproject" className="text-lg text-emerald-400">New</Link>
         </div>
         {data.projects.length > 0 ? <div className="flex mt-4 flex-wrap mx-4">
-          {data.projects.map((i, j) => <a key={j} href={`${i.url ? i.url : '#'}`} className="md:w-1/2 w-full h-48 md:p-2"> <div className="w-full p-4 rounded-xl h-full" style={{ background: `linear-gradient(to right, #0f0f0fee, #0f0f0fdd), url(${i.image})`, backgroundSize: `cover`, }}><div className="flex-col items-end flex justify-end h-full">
+          {data.projects.map((i, j) => <a key={j} href={`${i.url ? i.url : '#'}`} className="md:w-1/2 w-full h-48 md:p-2"> <div className="w-full p-4 relative rounded-xl h-full" style={{ background: `linear-gradient(to right, #0f0f0fee, #0f0f0fdd), url(${i.image})`, backgroundSize: `cover`, }}><div className="flex-col items-end flex justify-end h-full">
             <p className="text-xl">{i.name}</p>
             <p className="text-md text-gray-300">{i.description}</p>
+            <div className="absolute top-[0] left-0 p-3 flex gap-2">
+              <Link to={`${i.name}/edit`}><PencilSimple size={20} className="text-emerald-400" /></Link>
+              <Link to={`${i.name}/delete`}><TrashSimple size={20} className="text-red-300" /></Link>
+            </div>
           </div></div></a>)}
         </div> :
           <div className="flex h-128 mt-4 p-16 justify-center items-center">
