@@ -36,11 +36,11 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const form = await clonedData.formData();
   const i = form.get("img")
 
-  if (i.size > 256000) {
+  if (i.size > 2048000) {
     return badRequest({
       fieldErrors: null,
       fields,
-      formError: `File Size Too Big. Should be <5MB`,
+      formError: `File Size Too Big. Should be <2MB`,
     });
   }
   const uploadHandler: UploadHandler = composeUploadHandlers(
