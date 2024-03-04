@@ -27,8 +27,8 @@ export default function Index() {
   return (
     <div className="flex text-white p-8 justify-center items-center">
       <div className="px-0 md:px-4 lg:px-8 md:py-0 py-2 md:w-2/3 w-full lg:w-1/2" style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-        <div className="flex justify-between items-center w-full">
-          <div className="div flex gap-4 items-center">
+        <div className="flex justify-between flex-wrap gap-4  items-center w-full">
+          <div className="div flex flex-wrap gap-4 flex-col md:flex-row items-start md:items-center">
             <img src={data.user?.pfp} alt="" className="h-24 w-24 border-2 border-white rounded-full" />
             <div className="flex flex-col gap-[0]">
               <h1 className="text-3xl text-white">{data.user?.name}</h1>
@@ -78,7 +78,7 @@ export default function Index() {
         <div className="mt-6">
           <h1 className="text-2xl text-white mx-4">Showcase</h1>
           {data.projects.length > 0 ? <div className="flex mt-4 flex-wrap mx-4">
-            {data.projects.map((i, j) => <a key={j} href={`${i.url ? i.url : '#'}`} className="md:w-1/2 w-full h-48 md:p-2"> <div className="w-full p-4 relative rounded-xl h-full" style={{ background: `linear-gradient(to right, #0f0f0fee, #0f0f0fdd), url(${i.image})`, backgroundSize: `cover`, }}><div className="flex-col items-end flex justify-end h-full">
+            {data.projects.map((i, j) => <a key={j} href={`${i.url ? i.url : '#'}`} className="md:w-1/2 w-full h-48 py-2 md:p-2"> <div className="w-full p-4 relative rounded-xl h-full" style={{ background: `linear-gradient(to right, #0f0f0fee, #0f0f0fdd), url(${i.image})`, backgroundSize: `cover`, }}><div className="flex-col items-end flex justify-end h-full">
               <p className="text-xl">{i.name}</p>
               <p className="text-md text-gray-300">{i.description}</p>
             </div></div></a>)}
