@@ -42,6 +42,9 @@ export async function fetchUser(request: Request, name: string) {
   if (!user) {
     return null
   }
+  if (user.id == userId) {
+    return null
+  }
 
   return { user: { ...user, id: '' }, projects };
 }
