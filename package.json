@@ -23,10 +23,14 @@
     "@remix-run/serve": "^2.7.2",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.0.2",
+    "clsx": "^2.1.0",
+    "framer-motion": "^11.0.8",
     "isbot": "^4.1.0",
+    "mini-svg-data-uri": "^1.4.4",
     "mongodb": "^6.3.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "tailwind-merge": "^2.2.1"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
