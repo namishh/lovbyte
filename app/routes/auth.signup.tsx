@@ -68,7 +68,7 @@ export const loader = async ({
 }: LoaderFunctionArgs) => {
   const user = await getUser(request)
   if (user) {
-    return redirect("/users")
+    return redirect("/user")
   }
   return null
 };
@@ -138,7 +138,7 @@ export const action = async ({
           "Something went wrong trying to create a new user.",
       });
     }
-    return createUserSession(user.id, "/users");
+    return createUserSession(user.id, "/user");
 
   }
 }

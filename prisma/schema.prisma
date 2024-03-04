@@ -26,7 +26,6 @@ model User {
   name         String
   bio          String
   pfp          String
-  interests    String[]
   tech         String[]
   pronouns     String
   passwordHash String
@@ -35,4 +34,7 @@ model User {
   twitter      String
   dob          DateTime
   projects     Project[]
+  matched String[]
+  liked String[]
+  blocked String[]
 }

@@ -36,7 +36,7 @@ export const loader = async ({
 }: LoaderFunctionArgs) => {
   const user = await getUser(request)
   if (!user) {
-    return redirect("/users")
+    return redirect("/user")
   }
   return null
 };

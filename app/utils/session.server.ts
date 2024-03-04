@@ -78,6 +78,23 @@ export async function requireUserId(
   return userId;
 }
 
+export async function getUserBlockedFriends(request: Request) {
+  const userId = await getUserId(request);
+  if (typeof userId !== "string") {
+    return null;
+  }
+
+  const user = await db.user.findUnique({
+    select: { blocked: true, liked: true, matched: true },
+    where: { id: userId },
+  });
+
+  if (!user) {
+    throw await logout(request);
+  }
+
+  return user;
+}
 
 export async function getUserAllDetails(request: Request) {
   const userId = await getUserId(request);
@@ -86,7 +103,7 @@ export async function getUserAllDetails(request: Request) {
   }
 
   const user = await db.user.findUnique({
-    select: { passwordHash: false, id: true, email: true, twitter: true, github: true, interests: true, tech: true, pronouns: true, name: true, username: true, bio: true, dob: true, pfp: true, personalSite: true },
+    select: { passwordHash: false, id: true, email: true, twitter: true, github: true, tech: true, pronouns: true, name: true, username: true, bio: true, dob: true, pfp: true, personalSite: true },
     where: { id: userId },
   });
 
@@ -185,7 +202,7 @@ export async function register({
   const passwordHash = await bcrypt.hash(password, 10);
   const user = await db.user.create({
     data: {
-      passwordHash, username, email, name: username, bio: "", github: "", twitter: "", interests: [], pronouns: "they/them", projects: {}, pfp: `https://avatar.vercel.sh/${username}.png`, tech: [], personalSite: "",
+      passwordHash, username, email, name: username, bio: "", github: "", twitter: "", pronouns: "they/them", projects: {}, pfp: `https://avatar.vercel.sh/${username}.png`, tech: [], personalSite: "",
       dob: new Date(Number(year), Number(month) - 1, Number(date))
     },
   });

@@ -48,7 +48,7 @@ export default function Index() {
             </span>
           </div>
           <ul className={`md:flex md:items-center ml-0 z-[-1] md:z-auto navlist list-none ${open ? '' : 'hidden'}  sm:visible transition-all duration-400 md-static ms:absolute `}>
-            <li className="mx-0 my-6 md:my-0 md:mx-4" ><Link to="/users" className="text-xl hover:!text-emerald-400 cursor-pointer  font-medium !text-white"  >/users</Link></li>
+            <li className="mx-0 my-6 md:my-0 md:mx-4" ><Link to="/user" className="text-xl hover:!text-emerald-400 cursor-pointer  font-medium !text-white"  >/users</Link></li>
             {data.user ? <li className="mx-0 my-6 md:my-0 md:mx-4" ><Link to="/profile" className="text-xl hover:!text-emerald-400 cursor-pointer font-medium !text-white" >/profile</Link></li> :
               <li className="mx-0 my-6 md:my-0 md:mx-4" ><Link to="/auth/signin" className="text-xl hover:!text-emerald-400 cursor-pointer font-medium !text-white" >/signin</Link></li>
             }
@@ -64,7 +64,7 @@ export default function Index() {
           <h1 className="mt-6 font-black text-white text-3xl md:text-5xl">Your perfect programmer is just a <span className="text-emerald-400">click</span> away.</h1>
           <div className="mt-4 ml-1 text-gray-300">Lovbyte is an online dating platform made for programmers by programmers. {data.user?.id ? 'Start finding your match made in heaven or make changes to your profile.' : 'Make an account today, customize your profile and find the one for you.'}</div>
           <div className="flex mt-6 flex-wrap gap-4">
-            <Link className="text-black py-2 px-6 rounded-full bg-emerald-400" to={data.user?.id ? 'users' : 'auth/signup'}>{data.user?.id ? 'Find Now' : 'Sign Up'}</Link>
+            <Link className="text-black py-2 px-6 rounded-full bg-emerald-400" to={data.user?.id ? 'user' : 'auth/signup'}>{data.user?.id ? 'Find Now' : 'Sign Up'}</Link>
             <Link className="text-white py-2 px-6 rounded-full bg-neutral-900" to="https://github.com/chadcat7/lovbyte">Source Code</Link>
           </div>
         </div>
@@ -97,7 +97,7 @@ export default function Index() {
                   <ChatText size={48} weight="thin" className="text-emerald-400" />
                   <p className="text-emerald-400 text-lg md:text-xl font-light">CHAT</p>
                 </div>
-                <p className="text-gray-200 font-light mt-2">Like someone? Well take it forward while chatting on out website only. The chatrooms should be functional atleast 10% of the time</p>
+                <p className="text-gray-200 font-light mt-2">Like someone? Well take it forward while chatting on out website only. The chatrooms should be functional atleast 10% of the time.</p>
               </div>
             </div>
             <div className="p-4 w-full md:w-1/2">

@@ -21,7 +21,7 @@ export const loader = async ({
 }: LoaderFunctionArgs) => {
   const user = await getUser(request)
   if (user) {
-    return redirect("/users")
+    return redirect("/user")
   }
   return null
 };
@@ -52,7 +52,7 @@ export const action = async ({
       formError: "Username/Password combination is incorrect",
     });
   }
-  return createUserSession(user.id, "/users");
+  return createUserSession(user.id, "/user");
 
 }
 
