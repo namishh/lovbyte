@@ -118,7 +118,7 @@ export default function Index() {
         <div className="imgdiv mt-12 flex justify-center  md:w-2/3 w-full lg:w-1/3">
           <img src="/pfp1.webp" className="h-16 md:h-24 hover:z-[100] transition w-16 md:w-24 shadow-[0_3px_10px_rgb(0,0,0,0.2)] rounded-full" alt="" />
           <img src="/pfp2.webp" className="h-16 md:h-24 hover:z-[100] transition -ml-4 md:-ml-8 w-16 md:w-24 shadow-[0_3px_10px_rgb(0,0,0,0.2)] rounded-full" alt="" />
-          <img src="/pfp5.webp" className="h-16 md:h-24 hover:z-[100] transition -ml-4 md:-ml-8 w-16 md:w-24 shadow-[0_3px_10px_rgb(0,0,0,0.2)] rounded-full" alt="" />
+          <img src="/pfp3.webp" className="h-16 md:h-24 hover:z-[100] transition -ml-4 md:-ml-8 w-16 md:w-24 shadow-[0_3px_10px_rgb(0,0,0,0.2)] rounded-full" alt="" />
         </div>
         <p className="mt-12 w-full lg:w-1/3 px-4 md:px-0 md:w-2/3 text-gray-200 text-lg">Yes this is joke, mainly run by <a href="https://nam.is-a.dev" className="text-emerald-400 underline">me (chadcat7).</a> This is not the next billion dollar startup, rather a project that started as a joke among my friends. But I would like to thank my friends <a href="https://arjunaditya.vercel.app" className="text-emerald-400 underline">nermal</a> and <a href="https://lineararray.nekoweb.org" className="text-emerald-400 underline">linear</a> for the idea</p>
       </div>
