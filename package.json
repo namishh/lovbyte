@@ -13,6 +13,14 @@
   "prisma": {
     "seed": "node --loader ts-node/esm prisma/seed.ts"
   },
+  "exports": {
+  ".": {
+    "import": "./dist/index.es.js"
+  },
+  "./*": {
+    "import": "./dist/icons/*.es.js"
+  }
+},
   "dependencies": {
     "@marsidev/react-turnstile": "^0.5.3",
     "@phosphor-icons/react": "^2.0.15",
