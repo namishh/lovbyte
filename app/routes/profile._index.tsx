@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs, } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { PencilSimple, TrashSimple } from "@phosphor-icons/react";
+import { PencilSimple, TrashSimple } from "phosphor-react";
 import {
   Link,
   useLoaderData,

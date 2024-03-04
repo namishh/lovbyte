@@ -8,7 +8,7 @@ import {
 } from "@remix-run/react";
 
 import { getUser } from "~/utils/session.server";
-import { ChatText, Heart, Palette, UserCircle } from "@phosphor-icons/react";
+import { ChatText, Heart, Palette, UserCircle } from "phosphor-react";
 
 export const loader = async ({
   request,

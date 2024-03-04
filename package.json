@@ -14,16 +14,15 @@
     "seed": "node --loader ts-node/esm prisma/seed.ts"
   },
   "exports": {
-  ".": {
-    "import": "./dist/index.es.js"
+    ".": {
+      "import": "./dist/index.es.js"
+    },
+    "./*": {
+      "import": "./dist/icons/*.es.js"
+    }
   },
-  "./*": {
-    "import": "./dist/icons/*.es.js"
-  }
-},
   "dependencies": {
     "@marsidev/react-turnstile": "^0.5.3",
-    "@phosphor-icons/react": "^2.0.15",
     "@prisma/client": "^5.10.2",
     "@remix-run/css-bundle": "^2.7.2",
     "@remix-run/node": "^2.7.2",
@@ -36,6 +35,7 @@
     "isbot": "^4.1.0",
     "mini-svg-data-uri": "^1.4.4",
     "mongodb": "^6.3.0",
+    "phosphor-react": "^1.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tailwind-merge": "^2.2.1"
