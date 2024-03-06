@@ -1,4 +1,4 @@
-  import type { MetaFunction, LoaderFunctionArgs, } from "@remix-run/node";
+import type { MetaFunction, LoaderFunctionArgs, } from "@remix-run/node";
 import { useState } from "react"
 import { json } from "@remix-run/node";
 import {
@@ -6,30 +6,35 @@ import {
   Outlet,
   useLoaderData,
 } from "@remix-run/react";
-
+import { redirect } from "@remix-run/node";
 import { getUser } from "~/utils/session.server";
 
 export const loader = async ({
   request,
 }: LoaderFunctionArgs) => {
+  const user = await getUser(request)
+  if (!user) {
+    return redirect("/auth/signin")
+  }
   return json({
     user: await getUser(request)
   });
 };
 
+
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
+    { title: "Chats" },
     { name: "description", content: "Welcome to Remix!" },
   ];
 };
 
-export default function Auth() {
+export default function Users() {
   const data = useLoaderData<typeof loader>();
   const [open, setOpen] = useState(false)
   return (
     <div>
-      <div className="z-50 sticky top-0 p-4 md:p-8 lg:px-16 w-full md:flex md:items-center md:justify-between">
+      <div className="z-50 sticky bg-neutral-950 top-0 p-4 md:p-8 lg:px-16 w-full md:flex md:items-center md:justify-between">
         <div className="flex items-center justify-between">
           <a className="flex cursor-pointer items-center" href="/">
             <span className="text-2xl cursor-pointer antialiased font-bold  text-gray-200">lov<span className="text-white">byte</span></span>
@@ -57,3 +62,4 @@ export default function Auth() {
     </div>
   );
 }
+

@@ -30,7 +30,7 @@ export default function Index() {
   const [open, setOpen] = useState(false)
   return (
     <div className="min-h-screen w-full bg-neutral-950 bg-dot-white/[0.2] relative ">
-      <div className="absolute pointer-events-none inset-0 -z-[10] flex items-center justify-center bg-neutral-950 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]">
+          <div className="absolute pointer-events-none inset-0 -z-[10] flex items-center justify-center bg-neutral-950 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]">
       </div>
       <div className="z-[100]">
         <div className="z-[100] sticky top-0 p-4 md:p-8 lg:px-16 w-full md:flex md:items-center md:justify-between">
@@ -59,7 +59,7 @@ export default function Index() {
         </div>
       </div>
       <div className="flex z-[10] min-h-[33rem] md:min-h-[45rem] justify-center items-center">
-        <div className="px-8 md:-2/3 w-full lg:w-1/2 mb-4" style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
+        <div className="px-8 md:-2/3 w-full lg:w-1/2 mb-4" >
           <h1 className="text-2xl text-gray-300">Find the <span className="text-emerald-400">{'< /'} one {' >'}</span>  that completes <span className="text-emerald-400">{'<'} you {'>'}</span></h1>
           <h1 className="mt-6 font-black text-white text-3xl md:text-5xl">Your perfect programmer is just a <span className="text-emerald-400">click</span> away.</h1>
           <div className="mt-4 ml-1 text-gray-300">Lovbyte is an online dating platform made for programmers by programmers. {data.user?.id ? 'Start finding your match made in heaven or make changes to your profile.' : 'Make an account today, customize your profile and find the one for you.'}</div>
