@@ -3,7 +3,6 @@ import { useState } from "react"
 import { json } from "@remix-run/node";
 import {
   Link,
-  Outlet,
   useLoaderData,
 } from "@remix-run/react";
 
@@ -30,7 +29,7 @@ export default function Index() {
   const [open, setOpen] = useState(false)
   return (
     <div className="min-h-screen w-full bg-neutral-950 bg-dot-white/[0.2] relative ">
-          <div className="absolute pointer-events-none inset-0 -z-[10] flex items-center justify-center bg-neutral-950 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]">
+      <div className="absolute pointer-events-none inset-0 -z-[10] flex items-center justify-center bg-neutral-950 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]">
       </div>
       <div className="z-[100]">
         <div className="z-[100] sticky top-0 p-4 md:p-8 lg:px-16 w-full md:flex md:items-center md:justify-between">
@@ -49,6 +48,7 @@ export default function Index() {
           </div>
           <ul className={`md:flex md:items-center ml-0 z-[-1] md:z-auto navlist list-none ${open ? '' : 'hidden'}  sm:visible transition-all duration-400 md-static ms:absolute `}>
             <li className="mx-0 my-6 md:my-0 md:mx-4" ><Link to="/user" className="text-xl hover:!text-emerald-400 cursor-pointer  font-medium !text-white"  >/users</Link></li>
+            {data.user && <li className="mx-0 my-6 md:my-0 md:mx-4" ><Link to="/chat" className="text-xl hover:!text-emerald-400 cursor-pointer font-medium !text-white" >/chats</Link></li>}
             {data.user ? <li className="mx-0 my-6 md:my-0 md:mx-4" ><Link to="/profile" className="text-xl hover:!text-emerald-400 cursor-pointer font-medium !text-white" >/profile</Link></li> :
               <li className="mx-0 my-6 md:my-0 md:mx-4" ><Link to="/auth/signin" className="text-xl hover:!text-emerald-400 cursor-pointer font-medium !text-white" >/signin</Link></li>
             }

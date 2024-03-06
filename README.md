@@ -1,9 +1,23 @@
-silly little project. making tinder like smth smth for programmers. 
+## lovbyte ❤️
 
-highly unfinished. right now i have not even scratched the surface
+![screenshot](https://i.imgur.com/v8FxPyT.png)
 
-## Goals 
-- design would be very minimal (its a design choice not a skill issue)
-- people can make accounts 
-- people can friend other
-- chatting is optional because of my backend skill issues.
+highly unfinished.
+
+### Goals // Todo
+- [x] Accounts
+	- [x] Change Basic Bio
+	- [x] Change Password 
+	- [x] Cloudinary for pfps
+	- [x] Projects 
+	- [x] User page
+- [x] Home page
+- [x] User Interaction
+	- [x] Like
+	- [x] Block 
+	- [x] Match 
+- [ ] Matches Page
+	- [x] Main Page
+	- [ ] Page for each room 
+- [ ] Actual chat implentation
+- [ ] Notifications to assist users

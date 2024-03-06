@@ -1,4 +1,4 @@
-  import type { MetaFunction, LoaderFunctionArgs, } from "@remix-run/node";
+import type { MetaFunction, LoaderFunctionArgs, } from "@remix-run/node";
 import { useState } from "react"
 import { json } from "@remix-run/node";
 import {
@@ -23,7 +23,6 @@ export const meta: MetaFunction = () => {
     { name: "description", content: "Welcome to Remix!" },
   ];
 };
-
 export default function Auth() {
   const data = useLoaderData<typeof loader>();
   const [open, setOpen] = useState(false)

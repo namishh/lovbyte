@@ -1,6 +1,7 @@
 import { redirect } from "@remix-run/node";
 import { db } from "./db.server";
 import { getUserAllDetails, getUserBlockedFriends, getUserId, updateUser } from "./session.server";
+import { makeRoom, deleteRoom } from "./room.server";
 
 export const getRandomUser = async (request: Request) => {
   const userId = await getUserId(request);
@@ -22,10 +23,27 @@ export const getRandomUser = async (request: Request) => {
   return randomUser.cursor.firstBatch[0];
 }
 
+// TODO: get list of all people you have matched with
+export const getAllMatched = async (request: Request) => {
+  const ids = await getUserBlockedFriends(request)
+  const matched = ids?.matched 
+  const matches = []
+  for (const person of matched) {
+    const contents = await fetchUser(request, person);
+    matches.push(contents)
+  }
+  return matches
+}
+
 export const blockPerson = async (request: Request, username: string) => {
   const userdata = await getUserBlockedFriends(request)
+  const person = await db.user.findUnique({
+    select: { blocked: true, liked: true, matched: true, id: true },
+    where: { username },
+  });
   if (!userdata?.blocked.includes(username)) {
     await updateUser(request, { blocked: [...userdata?.blocked, username], liked: userdata?.liked.filter(x => x != username), matched: userdata?.matched.filter(x => x != username) })
+    await deleteRoom(request, person.id)
     return "success"
   } else {
     await updateUser(request, { blocked: userdata.blocked.filter(x => x != username) })
@@ -37,7 +55,7 @@ export const likePerson = async (request: Request, username: string) => {
   const userdata = await getUserBlockedFriends(request)
   const user = await getUserAllDetails(request)
   const person = await db.user.findUnique({
-    select: { blocked: true, liked: true, matched: true },
+    select: { blocked: true, liked: true, matched: true, id: true },
     where: { username },
   });
   const matched = person?.liked.includes(String(user?.username))
@@ -46,20 +64,20 @@ export const likePerson = async (request: Request, username: string) => {
       await updateUser(request, { matched: matched ? [...userdata?.matched, username] : [...userdata?.matched], liked: [...userdata?.liked, username], blocked: userdata?.blocked.filter(x => x != username) })
       if (matched) {
         await db.user.update({
-
           where: { username },
           data: { matched: [...person?.matched, user?.username] }
-        })
+        }) 
+        await makeRoom(request, person.id)
       }
       return "success"
     } else {
-      console.log(person?.matched.filter(x => x != username))
       await updateUser(request, { matched: userdata.matched.filter(x => x != username), liked: userdata.liked.filter(x => x != username) })
       if (matched) {
         await db.user.update({
           where: { username },
           data: { matched: person?.matched.filter(x => x != user?.username) }
         })
+        await deleteRoom(request, person.id)
       }
       return "success"
     }

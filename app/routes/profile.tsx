@@ -52,6 +52,7 @@ export default function Profile() {
           </div>
           <ul className={`md:flex md:items-center ml-0 z-[-1] md:z-auto navlist list-none ${open ? '' : 'hidden'}  sm:visible transition-all duration-400 md-static ms:absolute `}>
             <li className="mx-0 my-6 md:my-0 md:mx-4" ><Link to="/user" className="text-xl hover:!text-emerald-400 cursor-pointer  font-medium !text-white"  >/users</Link></li>
+            {data.user && <li className="mx-0 my-6 md:my-0 md:mx-4" ><Link to="/chat" className="text-xl hover:!text-emerald-400 cursor-pointer font-medium !text-white" >/chats</Link></li>}
             {data.user ? <li className="mx-0 my-6 md:my-0 md:mx-4" ><Link to="/profile" className="text-xl hover:!text-emerald-400 cursor-pointer font-medium !text-white" >/profile</Link></li> :
               <li className="mx-0 my-6 md:my-0 md:mx-4" ><Link to="/auth/signin" className="text-xl hover:!text-emerald-400 cursor-pointer font-medium !text-white" >/signin</Link></li>
             }
