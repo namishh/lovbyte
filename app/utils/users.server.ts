@@ -23,14 +23,15 @@ export const getRandomUser = async (request: Request) => {
   return randomUser.cursor.firstBatch[0];
 }
 
-// TODO: get list of all people you have matched with
 export const getAllMatched = async (request: Request) => {
   const ids = await getUserBlockedFriends(request)
-  const matched = ids?.matched 
+  const matched = ids?.matched
   const matches = []
-  for (const person of matched) {
-    const contents = await fetchUser(request, person);
-    matches.push(contents)
+  if (matched) {
+    for (const person of matched) {
+      const contents = await fetchUser(request, person);
+      matches.push(contents)
+    }
   }
   return matches
 }
@@ -43,12 +44,20 @@ export const blockPerson = async (request: Request, username: string) => {
   });
   if (!userdata?.blocked.includes(username)) {
     await updateUser(request, { blocked: [...userdata?.blocked, username], liked: userdata?.liked.filter(x => x != username), matched: userdata?.matched.filter(x => x != username) })
-    await deleteRoom(request, person.id)
+    // await deleteRoom(request, person.id)
     return "success"
   } else {
     await updateUser(request, { blocked: userdata.blocked.filter(x => x != username) })
     return "success"
   }
+}
+
+export const getIdByName = async (username: string) => {
+  const person = await db.user.findUnique({
+    select: { id: true },
+    where: { username },
+  });
+  return person
 }
 
 export const likePerson = async (request: Request, username: string) => {
@@ -66,8 +75,8 @@ export const likePerson = async (request: Request, username: string) => {
         await db.user.update({
           where: { username },
           data: { matched: [...person?.matched, user?.username] }
-        }) 
-        await makeRoom(request, person.id)
+        })
+        await makeRoom(request, String(person?.id))
       }
       return "success"
     } else {
@@ -77,7 +86,7 @@ export const likePerson = async (request: Request, username: string) => {
           where: { username },
           data: { matched: person?.matched.filter(x => x != user?.username) }
         })
-        await deleteRoom(request, person.id)
+        // await deleteRoom(request, person.id)
       }
       return "success"
     }

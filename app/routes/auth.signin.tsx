@@ -53,7 +53,6 @@ export const action = async ({
     });
   }
   return createUserSession(user.id, "/user");
-
 }
 
 
@@ -86,7 +85,6 @@ export default function AuthSignIn() {
           </div>
           <div className="flex flex-col gap-3">
             <label htmlFor="password-input" className="text-white">Password</label>
-
             <input
               id="password-input"
               defaultValue={actionData?.fields?.password}

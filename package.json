@@ -33,6 +33,7 @@
     "clsx": "^2.1.0",
     "framer-motion": "^11.0.8",
     "isbot": "^4.1.0",
+    "lru-cache": "^10.2.0",
     "mini-svg-data-uri": "^1.4.4",
     "mongodb": "^6.3.0",
     "phosphor-react": "^1.4.1",
