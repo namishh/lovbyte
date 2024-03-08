@@ -1,13 +1,21 @@
 import { db } from "./db.server";
 import { getUserId } from "./session.server";
 
+
 export const makeRoom = async (request: Request, otherperson: string) => {
   const userId = await getUserId(request)
   if (userId) {
-    const room = await db.room.create({
-      data: { users: [userId, otherperson] }
+    const d = await db.room.findUnique({
+      where: {
+        users: [userId, otherperson]
+      }
     })
-    return room
+    if (!d) {
+      const room = await db.room.create({
+        data: { users: [userId, otherperson] }
+      })
+      return room
+    }
   }
 }
 
@@ -31,7 +39,14 @@ export const getRoomId = async (request: Request, otherperson: string) => {
         users: [userId, otherperson]
       }
     })
-    return d
+
+    const e = await db.room.findUnique({
+      where: {
+        users: [otherperson, userId]
+      }
+    })
+
+    return d || e
   }
   return null
 }

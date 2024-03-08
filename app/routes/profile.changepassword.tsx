@@ -25,7 +25,6 @@ function validatePassword(password: string) {
 }
 
 function validateconfirm(p: string, c: string) {
-  console.log(p, c)
   if (p !== c) {
     return "Passwords do not match"
   }

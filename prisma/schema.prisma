@@ -22,6 +22,8 @@ model Message {
   content    String
   timestamp  DateTime   @default(now())
   sender String
+  senderId String
+  pfp String
   room  String
 }
 

@@ -78,7 +78,7 @@ export async function requireUserId(
   return userId;
 }
 
-export async function getUserBlockedFriends(request: Request) {
+export async function getUserBlockedFriends(request) {
   const userId = await getUserId(request);
   if (typeof userId !== "string") {
     return null;

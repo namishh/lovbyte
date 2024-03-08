@@ -23,6 +23,12 @@ function validateUsername(username: string) {
   if (username.length < 4) {
     return "Usernames must be at least 4 characters long";
   }
+  const notallowed = '@#$%^&*()=+~`{}[]:;"\\\'<,>>/'.split("")
+  notallowed.forEach(e => {
+    if (username.includes(e)) {
+      return "Username cannot contain special symbols"
+    }
+  })
 }
 
 function isLeapYear(year: number) {
@@ -129,7 +135,6 @@ export const action = async ({
     });
   } else {
     const user = await register({ username, password, email, month, date, year });
-    console.log({ user });
     if (!user) {
       return badRequest({
         fieldErrors: null,

@@ -20,8 +20,8 @@ highly unfinished.
 	- [x] Main Page
 	- [x] Page for each room 
 - [ ] Actual chat implentation
-    - [ ] Create a connection b/w two
-    - [ ] Display Message history 
-    - [ ] Send Message 
+    - [x] Create a connection b/w two
+    - [x] Display Message history 
+    - [x] Send Message 
     - [ ] Delete Message
 - [ ] Notifications to assist users
