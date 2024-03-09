@@ -19,9 +19,8 @@ highly unfinished.
 - [x] Matches Page
 	- [x] Main Page
 	- [x] Page for each room 
-- [ ] Actual chat implentation
+- [x] Actual chat implentation
     - [x] Create a connection b/w two
     - [x] Display Message history 
     - [x] Send Message 
-    - [ ] Delete Message
-- [ ] Notifications to assist users
+    - [x] Delete Message

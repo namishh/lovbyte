@@ -8,8 +8,9 @@ import { useEventSource } from "remix-utils/sse/react";
 import { getAllMatched, getIdByName } from "~/utils/users.server";
 import { useState, useEffect, useRef } from "react";
 import { useLoaderData } from "@remix-run/react";
-import { Form } from "@remix-run/react";
+import { Form, Link } from "@remix-run/react";
 import { emitter } from "~/utils/emitter";
+import { Trash } from "phosphor-react";
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
@@ -51,6 +52,7 @@ export const loader = async ({
     select: {
       id: true,
       content: true,
+      timestamp: true,
       sender: true,
       pfp: true,
       senderId: true,
@@ -104,15 +106,17 @@ export default function Chat() {
 
           {messages.map((message, index) => (
             <div key={index} className={`flex-col flex gap-4 ${data.userd?.id == message.senderId ? 'self-end' : 'self-start'}`}>
-              <div className={`flex gap-3  items-center justify-center ${data.userd?.id == message.senderId ? 'flex-row-reverse' : 'flex-row'}`}>
+              <div className={`flex gap-3 group  items-center justify-center ${data.userd?.id == message.senderId ? 'flex-row-reverse' : 'flex-row'}`}>
                 <img src={message.pfp} alt="" className="w-10 h-10 rounded-full" />
 
                 <div className={`rounded-lg ${data.userd?.id == message.senderId ? 'bg-emerald-600' : 'bg-neutral-900'} py-[0.3rem] px-4 shadow-md self-end`}>
                   {message.content}
                 </div>
+
+                <Link to={`delete/${message.id}`} >  <Trash size={32} className="text-red-300 group-hover:opacity-100 opacity-0 cursor-pointer" /> </Link>
               </div>
               <p className={`font-light ${data.userd?.id == message.senderId ? 'self-end' : 'self-start'} text-sm text-gray-600`}>
-                {message.sender}
+                {new Date(message.timestamp).toLocaleString('en-US')}
               </p>
             </div>
           ))}
