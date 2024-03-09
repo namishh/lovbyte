@@ -30,7 +30,7 @@ model Message {
 
 model Room {
   id          String   @id @default(uuid()) @map("_id")
-  users       String[] @unique
+  users       String @unique
 }
 
 model User {
